@@ -9,9 +9,11 @@ class Database{
 	private $database = "test";
 
 	public $db;
-	public $q;
-	public $dataCol;
-	public $dataVal;
+	private $q;
+	private $dataCol;
+	private $dataVal;
+	private $dataCond;
+	private $dataTable;
 
 	public function __construct(){
 		$this->db = new mysqli($this->dbservername, $this->dbusername, $this->dbpassword, $this->database);
@@ -36,6 +38,11 @@ class Database{
 		$this->dataVal = implode(", ", $dataValues);
 		$this->q =" INSERT INTO " . $dataTable . "(" . $dataCol . ") VALUES (" . $dataVal . ")";
 		return $this->db->query($this->q);
+	}
+
+	public function updateData($dataTable, $dataValues, $dataCondition){
+
+		$this->q = "UPDATE " . $dataTable . " SET " . implode_with_key($dataValues, '=') . "WHERE " . implode_with_key ($dataCondition, "", "");
 	}
 
 }
